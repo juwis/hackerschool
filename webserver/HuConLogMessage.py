@@ -1,7 +1,10 @@
 #!/usr/bin/python
 
 import time
-import Queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 
 class HuConLogMessage():
 
@@ -12,7 +15,7 @@ class HuConLogMessage():
         """
         Create the queue to store the log messages.
         """
-        cls._queue = Queue.Queue()
+        cls._queue = queue.Queue()
 
     def empty(cls):
         """

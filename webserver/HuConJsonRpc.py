@@ -137,7 +137,8 @@ class HuConJsonRpc():
                                              bufsize=1,
                                              stdin=subprocess.PIPE,
                                              stdout=subprocess.PIPE,
-                                             stderr=subprocess.STDOUT)
+                                             stderr=subprocess.STDOUT,
+                                             encoding='utf8')
 
         while True:
             output = cls._current_proc.stdout.readline()
