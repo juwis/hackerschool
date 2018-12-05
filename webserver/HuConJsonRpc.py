@@ -133,7 +133,7 @@ class HuConJsonRpc():
         """
         Run the file and catch all output of it.
         """
-        cls._current_proc = subprocess.Popen(['python', '-u', filename],
+        cls._current_proc = subprocess.Popen(['python3', '-u', filename],
                                              bufsize=1,
                                              stdin=subprocess.PIPE,
                                              stdout=subprocess.PIPE,

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 **********************************************************************
 * Filename    : Motor.py
@@ -7,7 +7,7 @@
 **********************************************************************
 '''
 
-import PCA9685
+from .PCA9685 import *
 
 class Motor(object):
     '''Motor driver class'''
@@ -24,12 +24,12 @@ class Motor(object):
         if channel<0 or channel > 16:
             raise ValueError("Motor channel \"{0}\" is not in (0, 15).".format(channel))
         if self._DEBUG:
-            print self._DEBUG_INFO, "Debug on"
+            print(self._DEBUG_INFO, "Debug on")
         self.channel = channel
         self.offset = offset
         self.lock = lock
 
-        self.pwm = PCA9685.PWM(address=address)
+        self.pwm = PWM(address=address)
         self.pwm.setup()
         self.frequency = self._FREQUENCY
         self.set_speed(0)
@@ -39,7 +39,7 @@ class Motor(object):
         pulse_wide   = self.pwm.map(speed, -100, 100, self._MIN_PULSE_WIDTH, self._MAX_PULSE_WIDTH)
         analog_value = int(float(pulse_wide) / 1000000 * self.frequency * 4096)
         if self._DEBUG:
-            print self._DEBUG_INFO, 'Speed %d equals Analog_value %d' % (speed, analog_value)
+            print(self._DEBUG_INFO, 'Speed %d equals Analog_value %d' % (speed, analog_value))
         return analog_value
 
     @property
@@ -60,7 +60,7 @@ class Motor(object):
         ''' Set offset for much user-friendly '''
         self._offset = value
         if self._DEBUG:
-            print self._DEBUG_INFO, 'Set offset to %d' % self.offset
+            print(self._DEBUG_INFO, 'Set offset to %d' % self.offset)
 
     def set_speed(self, speed):
         ''' Turn the motor with giving speed. '''
@@ -77,7 +77,7 @@ class Motor(object):
         val = self._speed_to_analog(speed)
         self.pwm.write(self.channel, 0, val)
         if self._DEBUG:
-            print self._DEBUG_INFO, 'Turn speed = %d' % speed
+            print(self._DEBUG_INFO, 'Turn speed = %d' % speed)
 
     @property
     def debug(self):
@@ -92,24 +92,24 @@ class Motor(object):
             raise ValueError('debug must be "True" (Set debug on) or "False" (Set debug off), not "{0}"'.format(debug))
 
         if self._DEBUG:
-            print self._DEBUG_INFO, "Set debug on"
+            print(self._DEBUG_INFO, "Set debug on")
         else:
-            print self._DEBUG_INFO, "Set debug off"
+            print(self._DEBUG_INFO, "Set debug off")
 
 def range_test():
     '''Motor driver test on channel 0'''
     import time
     a = Motor(0)
-    print self._DEBUG_INFO, "Set Speed: -100"
+    print(self._DEBUG_INFO, "Set Speed: -100")
     a.set_speed(-100)
     time.sleep(0.2)
-    print self._DEBUG_INFO, "Set Speed: 0"
+    print(self._DEBUG_INFO, "Set Speed: 0")
     a.set_speed(0)
     time.sleep(0.2)
-    print self._DEBUG_INFO, "Set Speed: 100"
+    print(self._DEBUG_INFO, "Set Speed: 100")
     a.set_speed(100)
     time.sleep(0.2)
-    print self._DEBUG_INFO, "Set Speed: 0"
+    print(self._DEBUG_INFO, "Set Speed: 0")
     a.set_speed(0)
 
 def test():
@@ -117,17 +117,17 @@ def test():
     import time
     a = Motor(0)
     for i in range(-100, 100, 10):
-        print i
+        print(i)
         a.set_speed(i)
         time.sleep(0.1)
     for i in range(100, -100, -10):
-        print i
+        print(i)
         a.set_speed(i)
         time.sleep(0.1)
     for i in range(-100, 0, 5):
         a.set_speed(i)
         time.sleep(0.05)
-    print i
+    print(i)
 
 def install():
     all_motor = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0]

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 '''
 **********************************************************************
 * Filename    : Motor.py
@@ -7,7 +7,7 @@
 **********************************************************************
 '''
 
-import PCA9685
+from .PCA9685 import *
 
 class Eye(object):
     '''Eye driver class'''
@@ -31,11 +31,11 @@ class Eye(object):
         if position<1 or position>4:
             raise ValueError("Eye position \"{0}\" is not in (1, 4).".format(position))
         if self._DEBUG:
-            print self._DEBUG_INFO, "Debug on"
+            print(self._DEBUG_INFO, "Debug on")
         self.color_coding = color_coding
         self.lock = lock
 
-        self.pwm = PCA9685.PWM(address=address)
+        self.pwm = PWM(address=address)
         self.pwm.setup()
         self.frequency = self._FREQUENCY
         self._set_channel(position, color_coding)
@@ -66,7 +66,7 @@ class Eye(object):
         pulse_wide   = self.pwm.map(color, 0, 255, self._MIN_PULSE_WIDTH, self._MAX_PULSE_WIDTH)
         analog_value = int(float(pulse_wide) / 1000000 * self.frequency * 4096)
         if self._DEBUG:
-            print self._DEBUG_INFO, 'Color %d equals Analog_value %d' % (color, analog_value)
+            print(self._DEBUG_INFO, 'Color %d equals Analog_value %d' % (color, analog_value))
         return analog_value
 
     @property
@@ -142,7 +142,7 @@ class Eye(object):
         self.pwm.write(self.channel_green, 0, val_green)
         self.pwm.write(self.channel_blue,  0, val_blue)
         if self._DEBUG:
-            print self._DEBUG_INFO, 'Set color = %d %d %d' % (red, green, blue)
+            print(self._DEBUG_INFO, 'Set color = %d %d %d' % (red, green, blue))
 
     @property
     def debug(self):
@@ -157,34 +157,34 @@ class Eye(object):
             raise ValueError('debug must be "True" (Set debug on) or "False" (Set debug off), not "{0}"'.format(debug))
 
         if self._DEBUG:
-            print self._DEBUG_INFO, "Set debug on"
+            print(self._DEBUG_INFO, "Set debug on")
         else:
-            print self._DEBUG_INFO, "Set debug off"
+            print(self._DEBUG_INFO, "Set debug off")
 
 def test():
     '''Eye driver test on all position'''
     import time
 
     for position in range(1, 5):
-        print "Position: ", position
+        print("Position: ", position)
         eye = Eye(position)
 
         for i in range(0, 256, 5):
-            print "R: ", i
+            print("R: ", i)
             eye.red = i
             eye.set_color()
             time.sleep(0.02)
 
         eye.set_color(0,0,0)
         for i in range(0, 256, 5):
-            print "G: ", i
+            print("G: ", i)
             eye.green = i
             eye.set_color()
             time.sleep(0.02)
 
         eye.set_color(0,0,0)
         for i in range(0, 256, 5):
-            print "B: ", i
+            print("B: ", i)
             eye.blue = i
             eye.set_color()
             time.sleep(0.02)
